@@ -1,10 +1,14 @@
 import React from 'react'
+import { useDispatch } from 'react-redux';
+import { startLogout } from '../../actions/auth';
 
 export const NavbarAdmin = () => {
 
+const dispatch = useDispatch(); 
+
 const handleClickLogout = (e) => {
     e.preventDefault();
-    console.log('Logout Clicked');
+    dispatch( startLogout() );
     // dispatch(setNavigation({page: e.currentTarget.value}));
 }
 

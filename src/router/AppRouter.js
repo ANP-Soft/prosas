@@ -1,33 +1,64 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { AdminScreen } from '../components/admin/AdminScreen';
-import { LoginScreen } from '../components/auth/LoginScreen';
 
+import { startChecking } from '../actions/auth';
+import { AdminScreen } from '../components/admin/AdminScreen';
+import { CheckingScreen } from '../components/auth/CheckingScreen';
+import { LoginScreen } from '../components/auth/LoginScreen';
+import { RegisterScreen } from '../components/auth/RegisterScreen';
 import { HomeScreen } from '../components/shop/HomeScreen';
+import { AdminRoute } from './AdminRoute';
+import { PublicRoute } from './PublicRoute';
 
 
 
 export const AppRouter = () => {
-  return (
+
+    const dispatch = useDispatch();
+    const { checking, uid, role } = useSelector(store => store.auth);
     
-    <BrowserRouter>
-        <Routes>
+    useEffect(() => {
+        dispatch( startChecking() );
+    }, [dispatch]);
+    
 
-            <Route path='/' element={
-                <HomeScreen />
-            }/>
+    if(checking){
+        return (
+            <CheckingScreen />
+        );
+    }
 
-            <Route path='/login' element={
-                <LoginScreen />
-            }/>
+    return (
+        
+        <BrowserRouter>
+            <Routes>
 
-            <Route path='/admin' element={
-                <AdminScreen />
-            }/>
+                <Route path='/' element={
+                    <HomeScreen />
+                }/>
 
-            <Route path='*' element={<Navigate replace to={'/'} />} />            
+                <Route path='/login' element={
+                    <PublicRoute uid={ uid } role={ role }>
+                        <LoginScreen />
+                    </PublicRoute>
+                } />
+                
+                <Route path='/register' element={
+                    <PublicRoute uid={ uid } role={ role }>
+                        <RegisterScreen />
+                    </PublicRoute> 
+                }/>
 
-        </Routes>
-    </BrowserRouter>
-  )
+                <Route path='/admin' element={
+                    <AdminRoute role={ role }>
+                        <AdminScreen />
+                    </AdminRoute>
+                }/>
+
+                <Route path='*' element={<Navigate replace to={'/'} />} />            
+
+            </Routes>
+        </BrowserRouter>
+    )
 }
