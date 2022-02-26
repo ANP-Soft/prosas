@@ -2,10 +2,13 @@ import React from 'react'
 import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 import validator from 'validator';
+// import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 
+// import { RecaptchaComponent } from './RecaptchaComponent';
 import { startLogin } from '../../actions/auth';
 import { useForm } from '../../hooks/useForm';
 import './style.css';
+
 
 export const LoginScreen = () => {
 
@@ -16,14 +19,23 @@ export const LoginScreen = () => {
   });
 
   const { fEmail, fPassword } = formLoginValues;
-  const handleLogin = (e) => {
+
+  
+
+  const handleLogin = async (e) => {
     e.preventDefault();
     if( !validator.isEmail( fEmail ))
         return Swal.fire('Error', 'El correo es inválido', 'error')
-    
+        
+    // const { ok, msg } = await checkReCaptchaV3(localStorage.getItem('reCaptchaToken'));
+    // console.log(ok, msg);
+    // if (!ok) {
+    //   return Swal.fire('Error', 'Es muy probable que seas un robot, no puedes continuar', 'error'); 
+    // }
+
     dispatch( startLogin( fEmail, fPassword ) );
-    
   };
+
 
   return (
       <section className='vh-100 gradient-custom'>
@@ -66,7 +78,13 @@ export const LoginScreen = () => {
                         ></input>
                         <label htmlFor='floatingPassword'>Contraseña</label>
                       </div>
-                      <p className='small mb-5 pb-lg-2'><a className='text-white-50' href='#!'>¿Olvidaste tu contraseña?</a></p>
+                    {/* <div className='d-flex justify-content-center mb-3'>
+                      <GoogleReCaptchaProvider reCaptchaKey={ process.env.REACT_APP_RECAPTCHAV3_CLIENT }>
+                        <RecaptchaComponent />
+                      </GoogleReCaptchaProvider>
+                    </div> */}
+
+                      <p className='small mb-4 pb-lg-2'><a className='text-white-50' href='#!'>¿Olvidaste tu contraseña?</a></p>
                       <button className='btn btn-outline-light btn-lg px-5' type='submit'>Ingresar</button>
                     </form>
 

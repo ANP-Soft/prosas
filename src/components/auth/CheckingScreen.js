@@ -10,8 +10,8 @@ export const CheckingScreen = () => {
                     <div className='card bg-dark text-white' >
                         <div className='card-body p-5 text-center'>
                             <div className='mb-md-5 mt-md-4 pb-5'>
-                                <div class="spinner-border text-light spiner-custom" role="status">
-                                    <span class="visually-hidden">Loading...</span>
+                                <div className="spinner-border text-light spiner-custom" role="status">
+                                    <span className="visually-hidden">Loading...</span>
                                 </div>
                             </div>
                           </div>

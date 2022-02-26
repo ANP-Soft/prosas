@@ -1,11 +1,16 @@
 import React from 'react'
+import { useDispatch } from 'react-redux';
+
+import { setNavigation } from '../../actions/adminNav';
 
 export const Sidebar = () => {
 
+const dispatch = useDispatch();
+
 const handleClick = (e) => {
     e.preventDefault();
-    console.log('page: ', e.currentTarget.value);
-    // dispatch(setNavigation({page: e.currentTarget.value}));
+    // console.log('page: ', e.currentTarget.value);
+    dispatch(setNavigation({page: e.currentTarget.value}));
 }
 
   return (
@@ -110,7 +115,7 @@ const handleClick = (e) => {
             <div className='d-grid gap-2 mt-1'>
                 <button 
                     className='btn btn-dark text-start'
-                    value='products'
+                    value='admProducts'
                     onClick={ e => handleClick(e) }
                 >
                     <i className="bi bi-basket-fill mx-2"></i>
@@ -122,7 +127,7 @@ const handleClick = (e) => {
             <div className='d-grid gap-2 mt-1'>
                 <button 
                     className='btn btn-dark text-start'
-                    value='categories'
+                    value='admCategories'
                     onClick={ e => handleClick(e) }
                 >
                     <i className="bi bi-tags-fill mx-2"></i>
@@ -134,7 +139,7 @@ const handleClick = (e) => {
             <div className='d-grid gap-2 mt-1'>
                 <button 
                     className='btn btn-dark text-start'
-                    value='users'
+                    value='admUsers'
                     onClick={ e => handleClick(e) }
                 >
                     <i className="bi bi-person-badge-fill mx-2"></i>

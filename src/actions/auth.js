@@ -19,7 +19,7 @@ export const startLogin = (email, password) => {
                     role: body.role
                 }) );
         } else {
-
+            
             const errorMsg = body.errors ? Object.values( body.errors )[0].msg : body.msg;
             Swal.fire('Error', errorMsg, 'error');
         }
@@ -94,3 +94,10 @@ const login = ( user ) => ({ type: types.authLogin, payload: user });
 
 const logout = () => ({ type: types.authLogout });
 
+export const checkReCaptchaV3 = async (token = '') => {
+    
+    const resp = await fetchAxios('auth/recaptcha', { idTokenReCaptcha: token }, 'POST');
+    const { data: body } = resp;
+
+    return { ...body };
+}
