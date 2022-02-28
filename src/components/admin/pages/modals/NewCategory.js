@@ -7,6 +7,8 @@ import moment from 'moment';
 import { uiCloseModal } from '../../../../actions/ui';
 import { useForm } from '../../../../hooks/useForm';
 import './modal.css';
+import Swal from 'sweetalert2';
+import { categoryStartAddNew } from '../../../../actions/category';
 
 
 
@@ -42,7 +44,12 @@ export const NewCategory = () => {
         e.preventDefault();
         formValues.lastModified = moment().toDate();
 
-        console.log(formValues);
+        if(name.length < 3){
+            return Swal.fire('Error', 'El campo debe ser mayor a 2 caracteres', 'error');
+        }
+
+        dispatch( categoryStartAddNew(formValues) );
+        
         closeModal();
     }
 

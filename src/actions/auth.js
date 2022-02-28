@@ -64,7 +64,7 @@ export const startChecking = () => {
             dispatch( checkingFinish() );
         } else{
 
-            const resp = await fetchAxios('auth/renew', undefined,'GET',undefined, localStorage.getItem('token'));
+            const resp = await fetchAxios('auth/renew', {},'GET',{}, localStorage.getItem('token'));
             const { data: body } = resp;
 
             if(body.ok){

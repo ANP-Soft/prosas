@@ -10,5 +10,9 @@ export const types = {
     authStartTokenRenew: '[auth-event] Start token renew',
     authLogout: '[auth-event] Logout',
 
-    adminNavigation: '[admin-event] Change Navigation'
+    adminNavigation: '[admin-event] Change Navigation',
+
+    categoryAddNew: '[category-event] New Category',
+    categoryLoaded: '[category-event] Loaded Categories',
+    categoryDeleted: '[category-event] Deleted Category',
 }
