@@ -1,11 +1,10 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Modal from 'react-modal';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 
 
 import { uiEditCloseModal } from '../../../../actions/ui';
-import { useForm } from '../../../../hooks/useForm';
 import './modal.css';
 import Swal from 'sweetalert2';
 import { categoryStartEdit } from '../../../../actions/category';
@@ -22,7 +21,9 @@ const customStyles = {
     },
 };
 
-
+const initFormValue = {
+    name: ''
+};
 
 
 export const EditCategory = () => {
@@ -30,16 +31,33 @@ export const EditCategory = () => {
     const { editModalOpen } = useSelector(state => state.ui);
     const { active } = useSelector(state => state.category);
 
-    const initFormValue = {
-            name: active.name
-    };
+    
 
-    const [formValues, handleFormValues, reset] = useForm(initFormValue);
-    const dispatch = useDispatch();
+    const [formValues, setFormValues] = useState(initFormValue);
     const { name } = formValues;
+    // const resetForm = () => {
+    //     setFormValues(initFormValue);
+    // }
+
+    useEffect(() => {
+        if(active) {
+            setFormValues(active);
+        }
+    }, [active]);
+
+    const handleInputChange = (e) => {
+        if(typeof (e.target) !== "undefined"){
+            setFormValues({
+                ...formValues,
+                [e.target.name]: e.target.value
+            });
+        }
+    }
+
+    const dispatch = useDispatch();
+    
 
     const closeModal = () => {
-         reset();
          dispatch( uiEditCloseModal() );
     }
 
@@ -52,7 +70,7 @@ export const EditCategory = () => {
         }
 
         console.log(formValues);
-        // dispatch( categoryStartEdit(formValues) );
+        dispatch( categoryStartEdit(formValues) );
         
         closeModal();
     }
@@ -83,7 +101,7 @@ export const EditCategory = () => {
                     
                         name='name'
                         value={ name }
-                        onChange={ handleFormValues }
+                        onChange={ handleInputChange }
                     ></input>
                     <label htmlFor='floatingName'>Nombre Categoría</label>
                 </div>

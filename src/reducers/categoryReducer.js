@@ -2,7 +2,7 @@ import { types } from '../types/types';
 
 const initialState = {
     category: [],
-    active: {},
+    active: null,
 };
 
 export const categoryReducer = ( state = initialState, action ) => {
@@ -16,7 +16,7 @@ export const categoryReducer = ( state = initialState, action ) => {
                     ...state.category,
                     action.payload,
                 ],
-                active: {},
+                active: null,
             }
         
         case types.categoryLoaded:
@@ -29,7 +29,7 @@ export const categoryReducer = ( state = initialState, action ) => {
             return {
                 ...state,
                 category: state.category.filter( category => (category.catId !== action.payload.catId) ),
-                active: {},
+                active: null,
             }
         
         case types.categoryEdited:
@@ -47,7 +47,7 @@ export const categoryReducer = ( state = initialState, action ) => {
         case types.categoryRemoveActive:
             return {
                 ...state,
-                active: {},
+                active: null,
             }
         
         default:

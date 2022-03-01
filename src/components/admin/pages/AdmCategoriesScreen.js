@@ -24,13 +24,13 @@ export const AdmCategoriesScreen = () => {
 
   const handleOver = (e) => {
     e.preventDefault();
-    dispatch( categoryStartSetActive({ catId: e.currentTarget.value }) );
+    
   }
 
 
   const handleEdit = (e) =>{
     e.preventDefault();
-    console.log('Editar category: ', { catId: e.currentTarget.value });
+    dispatch( categoryStartSetActive({ catId: e.currentTarget.value }) );
     dispatch( uiEditOpenModal() );  
   };
 
