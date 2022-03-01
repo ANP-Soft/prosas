@@ -1,15 +1,15 @@
 import React from 'react'
 import { useDispatch } from 'react-redux';
 
-import { uiOpenModal } from '../../../actions/ui';
+import { uiNewOpenModal } from '../../../actions/ui';
 import { NewUser } from './modals';
 
 export const AdmUsersScreen = () => {
 
   const dispatch = useDispatch();
 
-  const openModal = (e) => {
-    dispatch( uiOpenModal() );
+  const openNewModal = (e) => {
+    dispatch( uiNewOpenModal() );
   }
 
   return (
@@ -17,7 +17,7 @@ export const AdmUsersScreen = () => {
         <div className='container-fluid'>  
           <h2 className='display-5 text-center'>Data Users Screen</h2>
           <hr />
-          <button className='btn btn-secondary' onClick={ openModal }>Nuevo Usuario</button>
+          <button className='btn btn-secondary' onClick={ openNewModal }>Nuevo Usuario</button>
           <NewUser />
         </div>
     </div>

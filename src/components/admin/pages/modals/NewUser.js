@@ -1,7 +1,7 @@
 import React from 'react'
 import Modal from 'react-modal';
 import { useDispatch, useSelector } from 'react-redux';
-import { uiCloseModal } from '../../../../actions/ui';
+import { uiNewCloseModal } from '../../../../actions/ui';
 
 import { useForm } from '../../../../hooks/useForm';
 import './modal.css';
@@ -26,13 +26,13 @@ const customStyles = {
 
 export const NewUser = () => {
 
-    const { modalOpen } = useSelector(state => state.ui);
+    const { newModalOpen } = useSelector(state => state.ui);
     const [formValues, handleFormValues] = useForm(initFormValue);
     const dispatch = useDispatch();
     const { name } = formValues;
 
     const closeModal = () => {
-         dispatch( uiCloseModal() );
+         dispatch( uiNewCloseModal() );
     }
 
     const handleSubmitForm = (e) => {
@@ -44,7 +44,7 @@ export const NewUser = () => {
     return (<>
         {/* New User */}
         <Modal
-            isOpen={ modalOpen }
+            isOpen={ newModalOpen }
             onRequestClose={ closeModal }
             style={ customStyles }
             className="modal"

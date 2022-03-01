@@ -38,3 +38,13 @@
     outline: none;
     padding: 10px;
 }
+
+/* TEXTO UTILITIES */
+
+.txt-lowercase {
+    text-transform: lowercase;
+}
+
+.txt-capitalize {
+    text-transform: capitalize;
+}

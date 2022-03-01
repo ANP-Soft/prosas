@@ -4,17 +4,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 
 
-import { uiCloseModal } from '../../../../actions/ui';
+import { uiNewCloseModal } from '../../../../actions/ui';
 import { useForm } from '../../../../hooks/useForm';
 import './modal.css';
 import Swal from 'sweetalert2';
 import { categoryStartAddNew } from '../../../../actions/category';
 
 
-
-const initFormValue = {
-    name: ''
-};
 Modal.setAppElement('#root');
 const customStyles = {
     content: {
@@ -27,17 +23,21 @@ const customStyles = {
     },
 };
 
+const initFormValue = {
+        name: ''
+};
+
 
 export const NewCategory = () => {
 
-    const { modalOpen } = useSelector(state => state.ui);
+    const { newModalOpen } = useSelector(state => state.ui);
     const [formValues, handleFormValues, reset] = useForm(initFormValue);
     const dispatch = useDispatch();
     const { name } = formValues;
 
     const closeModal = () => {
          reset();
-         dispatch( uiCloseModal() );
+         dispatch( uiNewCloseModal() );
     }
 
     const handleSubmitForm = (e) => {
@@ -56,7 +56,7 @@ export const NewCategory = () => {
     return (<>
         {/* New Category */}
         <Modal
-            isOpen={ modalOpen }
+            isOpen={ newModalOpen }
             onRequestClose={ closeModal }
             style={ customStyles }
             className="modal"

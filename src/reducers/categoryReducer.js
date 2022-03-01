@@ -1,7 +1,8 @@
 import { types } from '../types/types';
 
 const initialState = {
-    category : []
+    category: [],
+    active: {},
 };
 
 export const categoryReducer = ( state = initialState, action ) => {
@@ -14,7 +15,8 @@ export const categoryReducer = ( state = initialState, action ) => {
                 category: [ 
                     ...state.category,
                     action.payload,
-                ]
+                ],
+                active: {},
             }
         
         case types.categoryLoaded:
@@ -26,7 +28,26 @@ export const categoryReducer = ( state = initialState, action ) => {
         case types.categoryDeleted:
             return {
                 ...state,
-                category: state.category.filter( category => (category.catId !== action.payload.catId) )
+                category: state.category.filter( category => (category.catId !== action.payload.catId) ),
+                active: {},
+            }
+        
+        case types.categoryEdited:
+            return {
+                ...state,
+                category: state.category.map( category  => (category.catId === action.payload.catId) ? action.payload : category)
+            }
+        
+        case types.categorySetActive:
+            return {
+                ...state,
+                active: action.payload,
+            }
+        
+        case types.categoryRemoveActive:
+            return {
+                ...state,
+                active: {},
             }
         
         default:

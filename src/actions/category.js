@@ -45,12 +45,11 @@ export const categoryStartAddNew = (category) => {
         }
     }
 }
-
-
 const categoryAddNew = (category) => ({ type: types.categoryAddNew, payload: category });
 
+
 export const categoryStartLoading = () => {
-    return async ( dispatch, getState ) => {
+    return async ( dispatch ) => {
 
         try{
 
@@ -64,12 +63,11 @@ export const categoryStartLoading = () => {
         }
     }
 }
-
 const categoryLoaded = ( categories ) => ({ type: types.categoryLoaded, payload: categories });
 
 
 export const categoryDelete = (category) => {
-    return async ( dispatch, getState ) => {
+    return async ( dispatch ) => {
         try {
             
             const resp = await fetchAxios(`category/${category}`, {}, 'DELETE', {}, localStorage.getItem('token'));
@@ -87,6 +85,37 @@ export const categoryDelete = (category) => {
         }  
     }
 }
-
 const categoryDeleted = (category) => ({ type: types.categoryDeleted, payload: category });
 
+export const categoryStartEdit = (category) => {
+    return async ( dispatch ) => {
+         
+        try {
+            const resp = await fetchAxios(`category/${category.catId}`, category, 'PUT', {}, localStorage.getItem('token'));
+            const { data: body } = resp;
+
+            if(body.ok){
+                dispatch( categoryEdited(category) );
+            } else{
+                Swal.fire('Error', body.msg, 'error');
+            }
+        } catch (err){
+            console.log(err);
+        }
+    }
+}
+const categoryEdited = (category) => ({ type: types.categoryEdited, payload: category });
+
+
+//CATEGORIA ACTIVA INACTIVA
+export const categoryStartSetActive = (category) => {
+    return async ( dispatch, getState ) => {
+        
+        const { category: categories } = getState().category;
+        const selectedCategory = categories.filter( value => (value.catId === category.catId));
+        
+        dispatch( categorySetActive(selectedCategory[0]) );
+    }
+}
+const categorySetActive = (category) => ({ type: types.categorySetActive, payload: category });
+export const categoryRemoveActive = () => ({ type: types.categoryRemoveActive });

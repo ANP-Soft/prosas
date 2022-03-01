@@ -1,16 +1,15 @@
 import React from 'react'
 import Modal from 'react-modal';
 import { useDispatch, useSelector } from 'react-redux';
-import { uiNewCloseModal } from '../../../../actions/ui';
+import moment from 'moment';
 
+
+import { uiEditCloseModal } from '../../../../actions/ui';
 import { useForm } from '../../../../hooks/useForm';
 import './modal.css';
+import Swal from 'sweetalert2';
+import { categoryStartEdit } from '../../../../actions/category';
 
-
-
-const initFormValue = {
-    name: ''
-};
 Modal.setAppElement('#root');
 const customStyles = {
     content: {
@@ -24,62 +23,84 @@ const customStyles = {
 };
 
 
-export const NewProduct = () => {
 
-    const { newModalOpen } = useSelector(state => state.ui);
-    const [formValues, handleFormValues] = useForm(initFormValue);
+
+export const EditCategory = () => {
+    
+    const { editModalOpen } = useSelector(state => state.ui);
+    const { active } = useSelector(state => state.category);
+
+    const initFormValue = {
+            name: active.name
+    };
+
+    const [formValues, handleFormValues, reset] = useForm(initFormValue);
     const dispatch = useDispatch();
     const { name } = formValues;
 
     const closeModal = () => {
-         dispatch( uiNewCloseModal() );
+         reset();
+         dispatch( uiEditCloseModal() );
     }
 
     const handleSubmitForm = (e) => {
         e.preventDefault();
+        formValues.lastModified = moment().toDate();
+
+        if(name.length < 3){
+            return Swal.fire('Error', 'El campo debe ser mayor a 2 caracteres', 'error');
+        }
+
         console.log(formValues);
+        // dispatch( categoryStartEdit(formValues) );
+        
         closeModal();
     }
 
     return (<>
-        {/* New Product */}
+        {/* Edit Category */}
         <Modal
-            isOpen={ newModalOpen }
+            isOpen={ editModalOpen }
             onRequestClose={ closeModal }
             style={ customStyles }
             className="modal"
             overlayClassName="modal-fondo"
             closeTimeoutMS={ 200 }   
         >
-            <h1 className='text-center'>Nuevo Producto</h1>
+            <h1 className='text-center'>Editar categoría</h1>
             <hr />
+            <p className='text-dark-50 mt-4 mb-5 text-center'>Por favor ingresa los datos requeridos</p>
             <form 
                 className="container"
                 onSubmit={ handleSubmitForm }
             >
-                <div className='form-floating form-outline'>
+                <div className='form-floating form-outline mb-4'>
                     <input
                         type='text'
                         className='form-control form-control-lg'
                         id='floatingName'
-                        placeholder='Nombre'
+                        placeholder='N'
                     
                         name='name'
                         value={ name }
                         onChange={ handleFormValues }
                     ></input>
-                    <label htmlFor='floatingName'>Nombre Producto</label>
+                    <label htmlFor='floatingName'>Nombre Categoría</label>
                 </div>
 
-                <button
+                <div className='text-center'>
+                    <button
                     type="submit"
                     className="btn btn-outline-secondary"
-                >
-                    <i className="far fa-save me-2"></i>
-                    <span> Guardar</span>
-                </button>
+                    >
+                        <i className="far fa-save me-2"></i>
+                        <span> Guardar</span>
+                    </button>
+                </div>
+                
 
             </form>
         </Modal>
     </>)
+
 }
