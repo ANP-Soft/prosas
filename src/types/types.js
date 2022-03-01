@@ -14,12 +14,25 @@ export const types = {
 
     adminNavigation:    '[admin-event] Change Navigation',
 
-    categoryAddNew:     '[category-event] New Category',
-    categoryLoaded:     '[category-event] Loaded Categories',
-    categoryDeleted:    '[category-event] Deleted Category',
-    categoryEdited:     '[category-event] Edited Category',
-    
+    categoryAddNew:         '[category-event] New Category',
+    categoryLoaded:         '[category-event] Loaded Categories',
+    categoryDeleted:        '[category-event] Deleted Category',
+    categoryEdited:         '[category-event] Edited Category',
     categorySetActive:      '[category-event] Set Active',
     categoryRemoveActive:   '[category-event] Remove Active',
+
+    productAddNew:          '[product-event] New Product',
+    productLoaded:          '[product-event] Loaded Product',
+    productDeleted:         '[product-event] Deleted Product',
+    productEdited:          '[product-event] Edited Product',
+    productSetActive:       '[product-event] Set Active',
+    productRemoveActive:    '[product-event] Remove Active',
+
+    userAddNew:         '[user-event] New User',
+    userLoaded:         '[user-event] Loaded User',
+    userDeleted:        '[user-event] Deleted User',
+    userEdited:         '[user-event] Edited User',
+    userSetActive:      '[user-event] Set Active',
+    userRemoveActive:   '[user-event] Remove Active',
 
 }

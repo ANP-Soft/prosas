@@ -1,9 +1,11 @@
 import { combineReducers } from 'redux';
-import { adminReducer } from './adminReducer';
-import { authReducer } from './authReducer';
-import { categoryReducer } from './categoryReducer';
 
 import { uiReducer } from './uiReducer';
+import { authReducer } from './authReducer';
+import { adminReducer } from './adminReducer';
+import { categoryReducer } from './categoryReducer';
+import { productReducer } from './productReducer';
+import { userReducer } from './userReducer';
 
 
 export const rootReducer = combineReducers({
@@ -11,4 +13,7 @@ export const rootReducer = combineReducers({
     auth: authReducer,
     admin: adminReducer,
     category: categoryReducer,
+    product: productReducer,
+    user: userReducer,
+
 });

@@ -22,11 +22,10 @@ export const AdmCategoriesScreen = () => {
 
   const { category } = useSelector(state => state.category);
 
-  const handleOver = (e) => {
-    e.preventDefault();
+  // const handleOver = (e) => {
+  //   e.preventDefault();
     
-  }
-
+  // }
 
   const handleEdit = (e) =>{
     e.preventDefault();
@@ -86,7 +85,7 @@ export const AdmCategoriesScreen = () => {
                         <td>{ e.name }</td>
                         <td>
                             <div className="btn-group" role="group" aria-label="Basic example">
-                              <button onClick={ e => handleEdit(e) } className='btn btn-outline-dark' value={ e.catId } onMouseOver={ e => handleOver(e) }>
+                              <button onClick={ e => handleEdit(e) } className='btn btn-outline-dark' value={ e.catId } /*onMouseOver={ e => handleOver(e) }*/>
                                 <i className="fs-5 bi bi-pencil-fill"></i>
                               </button>
                               <button onClick={ e => handleDelete(e) } className='btn btn-outline-dark' value={ e.catId }>

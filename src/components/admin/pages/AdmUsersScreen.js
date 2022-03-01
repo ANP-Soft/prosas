@@ -18,6 +18,7 @@ export const AdmUsersScreen = () => {
           <h2 className='display-5 text-center'>Data Users Screen</h2>
           <hr />
           <button className='btn btn-secondary' onClick={ openNewModal }>Nuevo Usuario</button>
+          <hr />
           <NewUser />
         </div>
     </div>
