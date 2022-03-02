@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
+import { categoryStartLoading } from '../../../actions/category';
 import { productStartLoading } from '../../../actions/product';
 
 import { uiNewOpenModal } from '../../../actions/ui';
@@ -15,8 +16,9 @@ export const AdmProductsScreen = () => {
   }
 
   useEffect(() => {
-        
-    dispatch( productStartLoading() ); //PARA CARGAR TODOS LAS CATEGORIAS
+    
+    dispatch( categoryStartLoading() ); //PARA CARGAR TODOS LAS CATEGORIAS
+    dispatch( productStartLoading() ); //PARA CARGAR TODOS LOS PRODUCTOS
 
   }, [dispatch]);
 

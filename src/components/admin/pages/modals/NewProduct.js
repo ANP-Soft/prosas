@@ -26,15 +26,19 @@ const customStyles = {
 const initFormValue = {
     name: '',
     category: '',
+    price: 0,
+    url: '',
+    description: '',
 };
 
 
 export const NewProduct = () => {
 
     const { newModalOpen } = useSelector(state => state.ui);
+    const { category : categories } = useSelector(state => state.category);
     const [formValues, handleFormValues, reset] = useForm(initFormValue);
     const dispatch = useDispatch();
-    const { name, category } = formValues;
+    const { name, price, url, description } = formValues;
 
     const closeModal = () => {
         reset();
@@ -45,9 +49,11 @@ export const NewProduct = () => {
         e.preventDefault();
         formValues.lastModified = moment().toDate();
 
-        if(name.length < 3){
-            return Swal.fire('Error', 'El campo debe ser mayor a 2 caracteres', 'error');
-        }
+        //Validaciones
+        if(name.length < 3) return Swal.fire('Error', 'Nombre debe ser mayor a 2 caracteres', 'error');
+        if(formValues.category === '') return Swal.fire('Error', 'Favor seleccione categoria', 'error');
+        if(price < 100) return Swal.fire('Error', 'Favor seleccione un precio válido', 'error');
+
 
         console.log(formValues);
 
@@ -71,7 +77,7 @@ export const NewProduct = () => {
                 className="container"
                 onSubmit={ handleSubmitForm }
             >
-                <div className='form-floating form-outline'>
+                <div className='form-floating form-outline mb-2'>
                     <input
                         type='text'
                         className='form-control form-control-lg'
@@ -85,27 +91,71 @@ export const NewProduct = () => {
                     <label htmlFor='floatingName'>Nombre Producto</label>
                 </div>
 
-                <div className='form-floating form-outline'>
-                    <input
-                        type='text'
-                        className='form-control form-control-lg'
-                        id='floatingCategory'
-                        placeholder='N'
-                    
-                        name='category'
-                        value={ category }
-                        onChange={ handleFormValues }
-                    ></input>
-                    <label htmlFor='floatingName'>Categoria</label>
+                <div className='form-floating form-outline mb-2'>
+                    <select className="form-control" id="floatingCategory" onChange={ handleFormValues } name='category' >
+                    <option selected value=''>Seleccione Categoria...</option>
+                    { categories.map((e, index) => {
+                            return (
+                                <option value={ e.catId }>{ e.name }</option>
+                            );
+                        })
+                    }
+                    </select>
+
+                    <label htmlFor='floatingCategory'>Categoria</label>
                 </div>
 
-                <button
+                <div className='form-floating form-outline mb-2'>
+                    <input
+                        type='number'
+                        className='form-control form-control-lg'
+                        id='floatingPrice'
+                        placeholder='N'
+                    
+                        name='price'
+                        value={ price }
+                        onChange={ handleFormValues }
+                    ></input>
+                    <label htmlFor='floatingPrice'>Precio</label>
+                </div>
+
+                <div className='form-floating form-outline mb-2'>
+                    <textarea
+                        type='text'
+                        className='form-control form-control-lg'
+                        id='floatingDescription'
+                        placeholder='N'
+                    
+                        name='description'
+                        value={ description }
+                        onChange={ handleFormValues }
+                    ></textarea>
+                    <label htmlFor='floatingDescription'>Descripcion</label>
+                </div>
+
+                <div className='form-floating form-outline mb-2'>
+                    <input
+                        type='file'
+                        className='form-control form-control-sm'
+                        id='floatingUrl'
+                        placeholder='N'
+                    
+                        name='url'
+                        value={ url }
+                        onChange={ handleFormValues }
+                    ></input>
+                    <label htmlFor='floatingUrl'>Foto</label>
+                </div>
+
+                <div className='text-center'>
+                    <button
                     type="submit"
                     className="btn btn-outline-secondary"
-                >
-                    <i className="far fa-save me-2"></i>
-                    <span> Guardar</span>
-                </button>
+                    >
+                        <i className="far fa-save me-2"></i>
+                        <span> Guardar</span>
+                    </button>
+                </div>
 
             </form>
         </Modal>
