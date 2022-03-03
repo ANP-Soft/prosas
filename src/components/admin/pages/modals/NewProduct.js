@@ -2,12 +2,13 @@ import React from 'react'
 import Modal from 'react-modal';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
+import Swal from 'sweetalert2';
 
 
 import { uiNewCloseModal } from '../../../../actions/ui';
 import { useForm } from '../../../../hooks/useForm';
+import { productStartAddNew } from '../../../../actions/product';
 import './modal.css';
-import Swal from 'sweetalert2';
 
 
 
@@ -27,6 +28,7 @@ const initFormValue = {
     name: '',
     category: '',
     price: 0,
+    stock: 0,
     url: '',
     description: '',
 };
@@ -38,7 +40,7 @@ export const NewProduct = () => {
     const { category : categories } = useSelector(state => state.category);
     const [formValues, handleFormValues, reset] = useForm(initFormValue);
     const dispatch = useDispatch();
-    const { name, price, url, description } = formValues;
+    const { name, price, url, description, stock } = formValues;
 
     const closeModal = () => {
         reset();
@@ -48,15 +50,16 @@ export const NewProduct = () => {
     const handleSubmitForm = (e) => {
         e.preventDefault();
         formValues.lastModified = moment().toDate();
+        formValues.dataFile = document.querySelector('#floatingUrl').files[0];
 
         //Validaciones
         if(name.length < 3) return Swal.fire('Error', 'Nombre debe ser mayor a 2 caracteres', 'error');
         if(formValues.category === '') return Swal.fire('Error', 'Favor seleccione categoria', 'error');
         if(price < 100) return Swal.fire('Error', 'Favor seleccione un precio válido', 'error');
-
+        if(stock === 0) return Swal.fire('Error', 'Favor seleccione un stock válido', 'error');
 
         console.log(formValues);
-
+        dispatch( productStartAddNew(formValues) );
         closeModal();
     }
 
@@ -93,16 +96,30 @@ export const NewProduct = () => {
 
                 <div className='form-floating form-outline mb-2'>
                     <select className="form-control" id="floatingCategory" onChange={ handleFormValues } name='category' >
-                    <option selected value=''>Seleccione Categoria...</option>
+                    <option  defaultValue=''>Seleccione Categoria...</option>
                     { categories.map((e, index) => {
                             return (
-                                <option value={ e.catId }>{ e.name }</option>
+                                <option key={ index } value={ e.catId }>{ e.name }</option>
                             );
                         })
                     }
                     </select>
 
                     <label htmlFor='floatingCategory'>Categoria</label>
+                </div>
+                
+                <div className='form-floating form-outline mb-2'>
+                    <input
+                        type='number'
+                        className='form-control form-control-lg'
+                        id='floatingStock'
+                        placeholder='N'
+                    
+                        name='stock'
+                        value={ stock }
+                        onChange={ handleFormValues }
+                    ></input>
+                    <label htmlFor='floatingStock'>Stock</label>
                 </div>
 
                 <div className='form-floating form-outline mb-2'>
