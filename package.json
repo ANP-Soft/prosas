@@ -19,6 +19,7 @@
     "react-scripts": "5.0.0",
     "react-social-login-buttons": "^3.6.0",
     "react-thunk": "^1.0.0",
+    "react-tooltip": "^4.2.21",
     "redux-thunk": "^2.4.1",
     "sweetalert2": "^11.4.0",
     "validator": "^13.7.0",

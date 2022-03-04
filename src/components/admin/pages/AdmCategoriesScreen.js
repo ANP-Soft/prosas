@@ -30,7 +30,7 @@ export const AdmCategoriesScreen = () => {
   const handleEdit = (e) =>{
     e.preventDefault();
     dispatch( categoryStartSetActive({ catId: e.currentTarget.value }) );
-    dispatch( uiEditOpenModal() );  
+    dispatch( uiEditOpenModal() );
   };
 
   const handleDelete = async (e) =>{

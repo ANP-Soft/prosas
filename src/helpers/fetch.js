@@ -26,6 +26,24 @@ const fetchAxios = async (endpoint, body='', method, params='', authToken='') =>
     }
 }
 
+const fetchAxiosFiles = async (endpoint, file) => {
+
+    const url = `${ baseUrl }/${ endpoint }`;
+    const headers = { 'Content-type': 'multipart/form-data' };
+    
+    try {
+
+        const formData = new FormData();
+        formData.append('img', file);
+        return await axios.put(url, formData, { headers });
+        
+    } catch(err){
+        return err.response;    
+    }
+    
+}
+
 export {
-    fetchAxios
+    fetchAxios,
+    fetchAxiosFiles
 }

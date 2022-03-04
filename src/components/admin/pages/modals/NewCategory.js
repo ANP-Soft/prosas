@@ -36,7 +36,7 @@ export const NewCategory = () => {
     const { name } = formValues;
 
     const closeModal = () => {
-         reset();
+         reset(); 
          dispatch( uiNewCloseModal() );
     }
 

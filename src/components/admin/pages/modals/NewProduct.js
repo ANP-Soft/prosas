@@ -58,7 +58,6 @@ export const NewProduct = () => {
         if(price < 100) return Swal.fire('Error', 'Favor seleccione un precio válido', 'error');
         if(stock === 0) return Swal.fire('Error', 'Favor seleccione un stock válido', 'error');
 
-        console.log(formValues);
         dispatch( productStartAddNew(formValues) );
         closeModal();
     }

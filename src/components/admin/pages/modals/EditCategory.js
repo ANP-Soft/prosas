@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react'
 import Modal from 'react-modal';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
+import Swal from 'sweetalert2';
 
 
 import { uiEditCloseModal } from '../../../../actions/ui';
-import './modal.css';
-import Swal from 'sweetalert2';
 import { categoryStartEdit } from '../../../../actions/category';
+import './modal.css';
 
 Modal.setAppElement('#root');
 const customStyles = {

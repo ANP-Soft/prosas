@@ -1,10 +1,13 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { categoryStartLoading } from '../../../actions/category';
-import { productStartLoading } from '../../../actions/product';
+import ReactTooltip from 'react-tooltip';
+import Swal from 'sweetalert2';
 
-import { uiNewOpenModal } from '../../../actions/ui';
-import { NewProduct } from './modals';
+import { uiEditOpenModal, uiNewOpenModal } from '../../../actions/ui';
+import { categoryStartLoading } from '../../../actions/category';
+import { productStartDelete, productStartLoading, productStartSetActive } from '../../../actions/product';
+import { EditProduct, NewProduct } from './modals';
+import '../style.css';
 
 export const AdmProductsScreen = () => {
 
@@ -24,15 +27,41 @@ export const AdmProductsScreen = () => {
 
   const handleEdit = (e) =>{
     e.preventDefault();
-    console.log('Edit Product     -->', e.currentTarget.value);
-    // dispatch( productStartSetActive({ pid: e.currentTarget.value }) );
-    // dispatch( uiEditOpenModal() );  
+    dispatch( productStartSetActive({ pid: e.currentTarget.value }) );
+    dispatch( uiEditOpenModal() );  
   };
 
   const handleDelete = async (e) =>{
     e.preventDefault();
-    console.log('Delete Product   -->', e.currentTarget.value);
+
+    const pid = e.currentTarget.value;
+    let confirm = false;
+
+    await Swal.fire({
+      title: '¿Estas seguro de borrar producto?',
+      text: "Esto no se puede revertir!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, borrar producto!',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        confirm = true;
+      }
+    });
+
+    if (confirm) {
+      // console.log('Delete Product   -->', pid);
+      dispatch( productStartDelete(pid) );
+    }
   }
+
+  // const handleViewImg = async (e) => {
+  //   e.preventDefault();
+  //   console.log('View IMG  -->', e.currentTarget.value);
+  // }
 
   return (
     <>
@@ -64,7 +93,17 @@ export const AdmProductsScreen = () => {
                           <td>{ e.name }</td>
                           <td>{ e.stock }</td>
                           <td>{ e.price }</td>
-                          <td>{ e.img }</td>
+                          <td>{ e.img &&
+                              <div className="btn-group">
+                                <button className='btn btn-outline-dark' /* onMouseOver={ e => handleViewImg(e) } */ data-tip data-for={'view-img-'+ e.img } /*value={ e.img }*/>
+                                  <ReactTooltip id={'view-img-'+ e.img }>
+                                    <img src={ e.img } alt="pid-img" className='rounded custom-img' />
+                                  </ReactTooltip>
+                                  <i className="fs-5 bi bi-card-image"></i>
+                                </button>
+                              </div>
+                              }
+                          </td>
                           <td>
                             <div className="btn-group" role="group" aria-label="Basic example">
                               <button onClick={ e => handleEdit(e) } className='btn btn-outline-dark' value={ e.pid }>
@@ -94,6 +133,7 @@ export const AdmProductsScreen = () => {
           </div>
 
           <NewProduct />
+          <EditProduct />
         </div>
     </div>
 
