@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
+
 import { categoryDelete, categoryStartLoading, categoryStartSetActive } from '../../../actions/category';
 import { uiEditOpenModal, uiNewOpenModal } from '../../../actions/ui';
 import { NewCategory, EditCategory } from './modals';
@@ -9,7 +10,7 @@ export const AdmCategoriesScreen = () => {
 
   const dispatch = useDispatch();
 
-  const openModal = (e) => {
+  const openNewModal = (e) => {
     dispatch( uiNewOpenModal() );
   }
 
@@ -64,7 +65,8 @@ export const AdmCategoriesScreen = () => {
         <div className='container-fluid'>  
           <h2 className='display-5 text-center'>Data Categories Screen</h2>
           <hr />
-        <button className='btn btn-secondary' onClick={ openModal }>Nueva Categoría</button>
+        <button className='btn btn-secondary' onClick={ openNewModal }>Nueva Categoría</button>
+        <div className='h5 mx-5 d-inline '>Total: <div className='d-inline text-warning bg-dark'>{ category.length } categorias</div></div>
         <hr />
 
         <div className="table-responsive">

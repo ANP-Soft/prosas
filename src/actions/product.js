@@ -8,7 +8,7 @@ export const productStartLoading = () => {
 
         try{
 
-            const resp = await fetchAxios('product', {},'GET', { limit: 100 });
+            const resp = await fetchAxios('product', {},'GET', { limit: 1000 });
             const { data: body } = resp;
             
             dispatch( productLoaded(body.products) );
@@ -48,6 +48,9 @@ export const productStartAddNew = (product) => {
                 }
                 product.pid = body.product.pid;
                 product.sku = body.product.sku;
+                product.category = {
+                    _id: product.category
+                };
                 product.user = {
                     _id : uid,
                     name : name
@@ -126,7 +129,6 @@ export const productStartEdit = (product) => {
             const resp = await fetchAxios(`product/${product.pid}`, product, 'PUT', {}, localStorage.getItem('token'));
             const { data: body } = resp;
 
-            console.log(resp);
             //OK UPDATE CORRECTO
             if(body.ok){
                 //SI VIENE IMAGEN
@@ -150,6 +152,9 @@ export const productStartEdit = (product) => {
                 product.user = {
                     _id : uid,
                     name : name
+                };
+                product.category = {
+                    _id: product.category
                 };
                 delete product.url;
                 

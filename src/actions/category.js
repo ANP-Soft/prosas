@@ -53,7 +53,7 @@ export const categoryStartLoading = () => {
 
         try{
 
-            const resp = await fetchAxios('category', {},'GET', { limit: 100 });
+            const resp = await fetchAxios('category', {},'GET', { limit: 1000 });
             const { data: body } = resp;
             
             dispatch( categoryLoaded(body.categories) );

@@ -70,6 +70,7 @@ export const AdmProductsScreen = () => {
           <h2 className='display-5 text-center'>Data Products Screen</h2>
           <hr />
           <button className='btn btn-secondary' onClick={ openNewModal }>Nuevo Producto</button>
+          <div className='h5 mx-5 d-inline '>Total: <div className='d-inline text-warning bg-dark'>{ product.length } productos</div></div>
           <hr/>
 
           <div className="table-responsive">

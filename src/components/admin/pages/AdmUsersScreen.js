@@ -1,6 +1,8 @@
-import React from 'react'
-import { useDispatch } from 'react-redux';
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
 
+import { userStartDelete, userStartLoading, userStartSetActive } from '../../../actions/user';
 import { uiNewOpenModal } from '../../../actions/ui';
 import { NewUser } from './modals';
 
@@ -12,14 +14,121 @@ export const AdmUsersScreen = () => {
     dispatch( uiNewOpenModal() );
   }
 
+  useEffect(() => {
+        
+    dispatch( userStartLoading() ); //PARA CARGAR TODOS LAS CATEGORIAS
+
+  }, [dispatch]);
+  
+  const { user } = useSelector(state => state.user);
+
+  const handleEdit = (e) =>{
+    e.preventDefault();
+    console.log('Editar User --> ',  e.currentTarget.value);
+    // dispatch( userStartSetActive({ uid: e.currentTarget.value }) );
+    // dispatch( uiEditOpenModal() ); 
+  };
+
+  const handleDelete = async (e) =>{
+    e.preventDefault();
+
+    const uid = e.currentTarget.value;
+    let confirm = false;
+
+    await Swal.fire({
+      title: '¿Estas seguro de deshabilitar usuario?',
+      text: "Esto provocara que no pueda acceder al sistema!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, deshabilitar usuario!',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        confirm = true;
+      }
+    });
+
+    if (confirm) {
+      dispatch( userStartSetActive({ uid }) );
+      dispatch( userStartDelete(uid) );
+    }
+  };
+
+
   return (
     <div className='col-md-9 col-lg-10 mt-3'>
         <div className='container-fluid'>  
           <h2 className='display-5 text-center'>Data Users Screen</h2>
           <hr />
           <button className='btn btn-secondary' onClick={ openNewModal }>Nuevo Usuario</button>
+          <div className='h5 mx-5 d-inline '>Total: <div className='d-inline text-warning bg-dark'>{ user.length } usuarios</div></div>
           <hr />
+
+          <div className="table-responsive">
+          <table className='table table-hover align-middle'>
+              <thead>
+                <tr className='table-dark'>
+                  <th scope="col">Email</th>
+                  <th scope="col">Nombre</th>
+                  <th scope="col">Rol</th>
+                  <th scope="col">Estado</th>
+                  <th scope="col">Editar</th>
+                </tr>
+              </thead>
+              <tbody className='table-secondary'>
+              { user.map((e, index) => {
+                
+                return (
+                  <tr key={ index }>
+                    <td>{ e.email }</td>
+                    <td>{ e.name }</td>
+                    <td>{ 
+                          (e.role === 'ADMIN_ROLE')
+                            ? <div className='text-danger fw-bold'>Administrador</div> 
+                            : (e.role === 'USER_ROLE')
+                              ? <div className='text-success fw-bold'>Usuario</div> 
+                              : <div className='text-warning fw-bold'>Rol No Reconido</div>
+                        }
+                    </td>
+                    <td>{ 
+                          (e.status) 
+                          ? <i className="bi bi-check-circle-fill text-success"></i>
+                          : <i className="bi bi-x-circle-fill text-danger"></i> 
+                        }
+                    </td>
+                    <td>
+                        <div className="btn-group" role="group" aria-label="Basic example">
+                          <button onClick={ e => handleEdit(e) } className='btn btn-outline-dark' value={ e.uid } /*onMouseOver={ e => handleOver(e) }*/>
+                            <i className="fs-5 bi bi-pencil-fill"></i>
+                          </button>
+                          <button onClick={ e => handleDelete(e) } className='btn btn-outline-dark' value={ e.uid }>
+                            <i className="fs-5 bi bi-trash3-fill"></i>
+                          </button>
+                        </div>
+                    </td>
+                  </tr>
+                  );
+                })
+              }
+
+              </tbody>
+              <tfoot>
+                <tr className='table-dark'>
+                  <th scope="col">Email</th>
+                  <th scope="col">Nombre</th>
+                  <th scope="col">Rol</th>
+                  <th scope="col">Estado</th>
+                  <th scope="col">Editar</th>
+                </tr>
+              </tfoot>
+
+            </table>
+          </div>
+
           <NewUser />
+
         </div>
     </div>
   )

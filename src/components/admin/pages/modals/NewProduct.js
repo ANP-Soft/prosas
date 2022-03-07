@@ -149,7 +149,7 @@ export const NewProduct = () => {
                     <label htmlFor='floatingDescription'>Descripcion</label>
                 </div>
 
-                <div className='form-floating form-outline mb-2'>
+                <div className='form-floating form-outline mb-4'>
                     <input
                         type='file'
                         className='form-control form-control-sm'
