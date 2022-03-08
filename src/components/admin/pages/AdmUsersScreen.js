@@ -2,8 +2,8 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 
-import { userStartDelete, userStartLoading, userStartSetActive } from '../../../actions/user';
-import { uiNewOpenModal } from '../../../actions/ui';
+import { userStartDisable, userStartEnable, userStartLoading, userStartSetActive } from '../../../actions/user';
+import { uiEditOpenModal, uiNewOpenModal } from '../../../actions/ui';
 import { NewUser } from './modals';
 
 export const AdmUsersScreen = () => {
@@ -24,25 +24,24 @@ export const AdmUsersScreen = () => {
 
   const handleEdit = (e) =>{
     e.preventDefault();
-    console.log('Editar User --> ',  e.currentTarget.value);
-    // dispatch( userStartSetActive({ uid: e.currentTarget.value }) );
-    // dispatch( uiEditOpenModal() ); 
+    dispatch( userStartSetActive({ uid: e.currentTarget.value }) );
+    dispatch( uiEditOpenModal() ); 
   };
 
-  const handleDelete = async (e) =>{
+  const handleDisable = async (e) =>{
     e.preventDefault();
 
     const uid = e.currentTarget.value;
     let confirm = false;
 
     await Swal.fire({
-      title: '¿Estas seguro de deshabilitar usuario?',
-      text: "Esto provocara que no pueda acceder al sistema!",
+      title: `¿Estas seguro de deshabilitar usuario?`,
+      text: 'Esto provocara que no pueda acceder al sistema!',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Si, deshabilitar usuario!',
+      confirmButtonText: `Si, deshabilitar usuario!`,
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
@@ -52,9 +51,36 @@ export const AdmUsersScreen = () => {
 
     if (confirm) {
       dispatch( userStartSetActive({ uid }) );
-      dispatch( userStartDelete(uid) );
+      dispatch( userStartDisable(uid) );
     }
   };
+
+  const handleEnable = async (e) => {
+    e.preventDefault();
+    
+    const uid = e.currentTarget.value;
+    let confirm = false;
+
+    await Swal.fire({
+      title: `¿Estas seguro de habilitar usuario?`,
+      text: 'Esto provocara que pueda acceder al sistema!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: `Si, habilitar usuario!`,
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        confirm = true;
+      }
+    });
+
+    if (confirm) {
+      dispatch( userStartSetActive({ uid }) );
+      dispatch( userStartEnable(uid) );
+    }
+  }
 
 
   return (
@@ -68,18 +94,18 @@ export const AdmUsersScreen = () => {
 
           <div className="table-responsive">
           <table className='table table-hover align-middle'>
-              <thead>
+              <thead className='text-center'>
                 <tr className='table-dark'>
                   <th scope="col">Email</th>
                   <th scope="col">Nombre</th>
                   <th scope="col">Rol</th>
+                  <th scope="col">Origen</th>
                   <th scope="col">Estado</th>
                   <th scope="col">Editar</th>
                 </tr>
               </thead>
-              <tbody className='table-secondary'>
+              <tbody className='table-secondary text-center'>
               { user.map((e, index) => {
-                
                 return (
                   <tr key={ index }>
                     <td>{ e.email }</td>
@@ -89,36 +115,51 @@ export const AdmUsersScreen = () => {
                             ? <div className='text-danger fw-bold'>Administrador</div> 
                             : (e.role === 'USER_ROLE')
                               ? <div className='text-success fw-bold'>Usuario</div> 
-                              : <div className='text-warning fw-bold'>Rol No Reconido</div>
-                        }
-                    </td>
-                    <td>{ 
-                          (e.status) 
-                          ? <i className="bi bi-check-circle-fill text-success"></i>
-                          : <i className="bi bi-x-circle-fill text-danger"></i> 
+                              : <div className='text-warning fw-bold'>Rol No Válido</div>
                         }
                     </td>
                     <td>
-                        <div className="btn-group" role="group" aria-label="Basic example">
-                          <button onClick={ e => handleEdit(e) } className='btn btn-outline-dark' value={ e.uid } /*onMouseOver={ e => handleOver(e) }*/>
-                            <i className="fs-5 bi bi-pencil-fill"></i>
-                          </button>
-                          <button onClick={ e => handleDelete(e) } className='btn btn-outline-dark' value={ e.uid }>
-                            <i className="fs-5 bi bi-trash3-fill"></i>
-                          </button>
-                        </div>
+                      {
+                        (e.facebook)
+                          ? <i class="fs-5 bi bi-facebook text-secondary"></i>
+                          : (e.google)
+                            ? <i class="fs-5bi bi-google text-secondary"></i>
+                            : <i class="fs-5 bi bi-pc-display-horizontal text-secondary"></i>
+                      }
+                    </td>
+                    <td>
+                      { 
+                        (e.status) 
+                        ? <i className="fs-5 bi bi-check-circle-fill text-success"></i>
+                        : <i className="fs-5 bi bi-x-circle-fill text-danger"></i> 
+                      }
+                    </td>
+                    <td>
+                      <div className="btn-group" role="group" aria-label="Basic example">
+                        <button onClick={ e => handleEdit(e) } className='btn btn-outline-dark' value={ e.uid } /*onMouseOver={ e => handleOver(e) }*/>
+                          <i className="fs-5 bi bi-pencil-fill"></i>
+                        </button>
+                        { (e.status)
+                          ? <button onClick={ e => handleDisable(e) } className='btn btn-outline-dark' value={ e.uid }>
+                              <i className="fs-5 bi bi-x-circle-fill"></i>
+                            </button>
+                          : <button onClick={ e => handleEnable(e) } className='btn btn-outline-dark' value={ e.uid }>
+                              <i className="fs-5 bi bi-check-circle-fill"></i>
+                            </button>
+                        }
+                      </div>
                     </td>
                   </tr>
                   );
                 })
               }
-
               </tbody>
-              <tfoot>
+              <tfoot className='text-center'>
                 <tr className='table-dark'>
                   <th scope="col">Email</th>
                   <th scope="col">Nombre</th>
                   <th scope="col">Rol</th>
+                  <th scope="col">Origen</th>
                   <th scope="col">Estado</th>
                   <th scope="col">Editar</th>
                 </tr>

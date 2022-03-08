@@ -74,7 +74,7 @@ export const AdmProductsScreen = () => {
           <hr/>
 
           <div className="table-responsive">
-            <table className='table table-hover align-middle'>
+            <table className='table table-hover align-middle text-center'>
               <thead>
                 <tr className='table-dark'>
                   <th scope="col">SKU</th>
