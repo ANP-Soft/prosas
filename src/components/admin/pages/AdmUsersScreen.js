@@ -4,7 +4,7 @@ import Swal from 'sweetalert2';
 
 import { userStartDisable, userStartEnable, userStartLoading, userStartSetActive } from '../../../actions/user';
 import { uiEditOpenModal, uiNewOpenModal } from '../../../actions/ui';
-import { NewUser } from './modals';
+import { EditUser, NewUser } from './modals';
 
 export const AdmUsersScreen = () => {
 
@@ -121,10 +121,10 @@ export const AdmUsersScreen = () => {
                     <td>
                       {
                         (e.facebook)
-                          ? <i class="fs-5 bi bi-facebook text-secondary"></i>
+                          ? <i className="fs-5 bi bi-facebook text-secondary"></i>
                           : (e.google)
-                            ? <i class="fs-5bi bi-google text-secondary"></i>
-                            : <i class="fs-5 bi bi-pc-display-horizontal text-secondary"></i>
+                            ? <i className="fs-5bi bi-google text-secondary"></i>
+                            : <i className="fs-5 bi bi-pc-display-horizontal text-secondary"></i>
                       }
                     </td>
                     <td>
@@ -169,7 +169,7 @@ export const AdmUsersScreen = () => {
           </div>
 
           <NewUser />
-
+          <EditUser />
         </div>
     </div>
   )

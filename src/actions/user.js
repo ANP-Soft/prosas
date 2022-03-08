@@ -87,8 +87,6 @@ export const userStartEnable = ( user ) => {
 }
 const userEdited = (user) => ({ type: types.userEdited, payload: user });
 
-
-//USER ACTIVA INACTIVA
 export const userStartSetActive = ( user ) => {
     return async ( dispatch, getState ) => {
         
@@ -103,3 +101,25 @@ export const userStartSetActive = ( user ) => {
 }
 const userSetActive = (user) => ({ type: types.userSetActive, payload: user });
 export const userRemoveActive = () => ({ type: types.userRemoveActive });
+
+export const userStartEdit = ( user ) => {
+    return async ( dispatch ) => {
+
+        try {
+
+            const resp = await fetchAxios(`user/${user.uid}`, user, 'PUT', {}, localStorage.getItem('token'));
+            const { data: body } = resp;
+
+            if(body.ok){
+                dispatch( userEdited(body.user) );
+                console.log(body);
+            } else {
+                Swal.fire('Error', body.msg, 'error');
+            }
+        } catch (err) {
+            console.log(err);
+        }
+
+
+    }
+}

@@ -61,6 +61,7 @@ export const startChecking = () => {
     return async (dispatch) => {
 
         if(localStorage.getItem('token') === null){
+            dispatch( logout() );
             dispatch( checkingFinish() );
         } else{
 
@@ -79,6 +80,7 @@ export const startChecking = () => {
                 }) );
 
             } else {
+                dispatch( logout() );
                 dispatch( checkingFinish() );
             }
         }

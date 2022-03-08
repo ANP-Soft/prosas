@@ -1,5 +1,6 @@
-import React from 'react'
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { startChecking } from '../../actions/auth';
 
 import { NavbarAdmin } from '../layout/NavbarAdmin';
 import { Sidebar } from '../layout/Sidebar';
@@ -9,7 +10,11 @@ import './style.css';
 export const AdminScreen = () => {
 
   const { page } = useSelector(store => store.admin);
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch( startChecking() );
+}, [page]);
 
   return (
     <>
