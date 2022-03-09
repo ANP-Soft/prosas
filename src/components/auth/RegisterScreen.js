@@ -2,8 +2,9 @@ import React from 'react'
 import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 import validator from 'validator';
-import { startRegister } from '../../actions/auth';
+import moment from 'moment';
 
+import { startRegister } from '../../actions/auth';
 import { useForm } from '../../hooks/useForm';
 import './style.css';
 
@@ -29,7 +30,8 @@ export const RegisterScreen = () => {
     if( !validator.isLength( fName, { min:6, max: undefined }) )
         return Swal.fire('Error', 'El nombre debe ser de mas de 6 caracteres', 'error');
     
-    dispatch( startRegister(fEmail, fPassword, fName) );
+    const lastModified = moment().toDate();
+    dispatch( startRegister(fEmail, fPassword, fName, lastModified) );
   };
 
   return (

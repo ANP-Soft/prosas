@@ -112,7 +112,6 @@ export const userStartEdit = ( user ) => {
 
             if(body.ok){
                 dispatch( userEdited(body.user) );
-                console.log(body);
             } else {
                 Swal.fire('Error', body.msg, 'error');
             }

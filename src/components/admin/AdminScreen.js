@@ -14,7 +14,7 @@ export const AdminScreen = () => {
 
   useEffect(() => {
     dispatch( startChecking() );
-}, [page]);
+}, [dispatch , page]);
 
   return (
     <>

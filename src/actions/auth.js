@@ -16,6 +16,7 @@ export const startLogin = (email, password) => {
             dispatch( login({ 
                     uid: body.uid,
                     name: body.name,
+                    email: body.email,
                     role: body.role
                 }) );
         } else {
@@ -26,10 +27,10 @@ export const startLogin = (email, password) => {
     }
 }
 
-export const startRegister = (email, password, name) => {
+export const startRegister = (email, password, name, lastModified) => {
     return async (dispatch) => {
 
-        const resp = await fetchAxios('user', { name, email, password, role: 'USER_ROLE' }, 'POST');
+        const resp = await fetchAxios('user', { name, email, password, lastModified, role: 'USER_ROLE' }, 'POST');
         const { data: body } = resp;
 
         if(body.ok){
@@ -89,11 +90,9 @@ export const startChecking = () => {
 
     }
 }
-
 const checkingFinish = () => ({ type: types.authCheckingFinish });
 
 const login = ( user ) => ({ type: types.authLogin, payload: user });
-
 const logout = () => ({ type: types.authLogout });
 
 export const checkReCaptchaV3 = async (token = '') => {
@@ -102,4 +101,52 @@ export const checkReCaptchaV3 = async (token = '') => {
     const { data: body } = resp;
 
     return { ...body };
+}
+
+export const startGoogleLogin = ( idToken ) => {
+    return async (dispatch) => {
+        const resp = await fetchAxios('auth/google', { id_token: idToken }, 'POST');
+        const { data: body } = resp;
+
+        if(body.ok){
+            localStorage.setItem('token', body.token);
+            localStorage.setItem('token-init-date', new Date().getTime() );
+
+            dispatch( login({ 
+                uid: body.user.uid,
+                name: body.user.name,
+                email: body.user.email,
+                role: body.user.role
+            }) );
+
+        } else {
+            const errorMsg = body.errors ? Object.values( body.errors )[0].msg : body.msg;
+            Swal.fire('Error', errorMsg, 'error');
+        }
+    }
+}
+
+export const startFacebookLogin = (idToken, name, email) => {
+    return async (dispatch) => {
+
+        const resp = await fetchAxios('auth/facebook', { id_token: idToken, name, email }, 'POST');
+        const { data: body } = resp;
+
+        if(body.ok){
+            localStorage.setItem('token', body.token);
+            localStorage.setItem('token-init-date', new Date().getTime() );
+
+            dispatch( login({ 
+                uid: body.user.uid,
+                name: body.user.name,
+                email: body.user.email,
+                role: body.user.role
+            }) );
+
+        } else {
+            
+            const errorMsg = body.errors ? Object.values( body.errors )[0].msg : body.msg;
+            Swal.fire('Error', errorMsg, 'error');
+        }
+    }
 }

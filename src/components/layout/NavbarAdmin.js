@@ -1,10 +1,11 @@
 import React from 'react'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { startLogout } from '../../actions/auth';
 
 export const NavbarAdmin = () => {
 
-const dispatch = useDispatch(); 
+const dispatch = useDispatch();
+const { email } = useSelector(state => state.auth);
 
 const handleClickLogout = (e) => {
     e.preventDefault();
@@ -25,7 +26,7 @@ const handleClickHome = (e) => {
             onClick={ handleClickHome }>
             Paqueteria Rosas
         </div>
-        {/* <a className='navbar-brand col-md-3 col-lg-2 me-0 px-3' href='#'></a> */}
+        
         <button 
             className='navbar-toggler d-md-none collapsed' 
             type='button' 
@@ -41,9 +42,12 @@ const handleClickHome = (e) => {
         <input className='form-control form-control-dark w-100' type='text' placeholder='Search' aria-label='Search' />
         <div className='navbar-nav'>
             <div className='nav-item text-nowrap'>
+                <div className='nav-link px-3'>{ email }</div>
+            </div>
+        </div>
+        <div className='navbar-nav'>
+            <div className='nav-item text-nowrap'>
                 <div className='nav-link px-3 pointer' onClick={ handleClickLogout }>Sign out</div>
-                
-                {/* <a className='nav-link px-3' href='#'>Sign out</a> */}
             </div>
         </div>
     </header>

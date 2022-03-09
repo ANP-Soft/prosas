@@ -2,10 +2,12 @@ import React from 'react'
 import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 import validator from 'validator';
+import GoogleLogin from 'react-google-login';
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 // import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 
 // import { RecaptchaComponent } from './RecaptchaComponent';
-import { startLogin } from '../../actions/auth';
+import { startFacebookLogin, startGoogleLogin, startLogin } from '../../actions/auth';
 import { useForm } from '../../hooks/useForm';
 import './style.css';
 
@@ -20,7 +22,19 @@ export const LoginScreen = () => {
 
   const { fEmail, fPassword } = formLoginValues;
 
-  
+  const handleGoogleLogin = ( response ) => {
+    // console.log(response);
+    const { tokenId } = response;
+    dispatch( startGoogleLogin(tokenId) );
+  };
+
+  const handleFacebookLogin = ( response ) => {
+    // console.log(response);
+    const { accessToken, name, email } = response;
+    dispatch( startFacebookLogin(accessToken, name, email) );
+    
+  };
+
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -89,8 +103,31 @@ export const LoginScreen = () => {
                     </form>
 
                     <div className='d-flex justify-content-center text-center mt-4 pt-1'>
-                      <a href='#!' className='text-white mx-4'><i className='fab fa-facebook-f fa-lg'></i></a>
-                      <a href='#!' className='text-white mx-4'><i className='fab fa-google fa-lg'></i></a>
+                      <GoogleLogin 
+                        clientId={ process.env.REACT_APP_GOOGLE_CLIENT }
+                        buttonText="Login with Google"
+                        onSuccess={ handleGoogleLogin }
+                        onFailure={ handleGoogleLogin }
+                        cookiePolicy={'single_host_origin'}
+                        isSignedIn={ false }
+                        render={renderProps => (
+                          <div className='text-white mx-4 btn' onClick={renderProps.onClick}>
+                            <i className='fab fa-google fa-lg'></i>
+                          </div>
+                        )}
+                      />
+                      <FacebookLogin
+                        appId={ process.env.REACT_APP_FACEBOOK_CLIENT }
+                        fields="name,email,picture"
+                        callback={ handleFacebookLogin }
+                        autoLoad={ false }
+                        render={renderProps => (
+                          <div className='text-white mx-4 btn' onClick={renderProps.onClick}>
+                            <i className='fab fa-facebook-f fa-lg'></i>
+                          </div>
+                        )}  
+                      />
+                      
                     </div>
 
                   </div>
