@@ -1,5 +1,6 @@
 import React from 'react'
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import validator from 'validator';
 import moment from 'moment';
@@ -11,6 +12,7 @@ import './style.css';
 export const RegisterScreen = () => {
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [formRegisterValues, handleRegisterInputChange] = useForm({
       fName: '',
       fEmail: '',
@@ -20,6 +22,11 @@ export const RegisterScreen = () => {
 
   const { fName, fEmail, fPassword, fPassword2 } = formRegisterValues;
   
+  const handleLogin = () => {
+    navigate('/login', { replace: true });
+  };
+
+
   const handleRegister = (e) => {
     e.preventDefault();
 
@@ -107,15 +114,10 @@ export const RegisterScreen = () => {
                     
                     </form>
 
-                    <div className='d-flex justify-content-center text-center mt-4 pt-1'>
-                      <a href='#!' className='text-white mx-4'><i className='fab fa-facebook-f fa-lg'></i></a>
-                      <a href='#!' className='text-white mx-4'><i className='fab fa-google fa-lg'></i></a>
-                    </div>
-
                   </div>
 
                   <div>
-                    <p className='mb-0'>¿Ya tienes una cuenta? <a href='#!' className='text-white-50 fw-bold'>Ingresa</a></p>
+                    <p className='mb-0 d-inline'>¿Ya tienes una cuenta? </p><div onClick={ handleLogin } className='text-white-50 fw-bold text-decoration-underline pointer d-inline'>Ingresa</div>
                   </div>
 
                 </div>

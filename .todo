@@ -1,1 +1,12 @@
-1.- Implementar Login via Facebook y Google
+1.- Implement recovery password system:
+
+    https://github.com/cornflourblue/node-mongo-signup-verification-api/blob/dd7a281835563655bc4d9ee6ab66a26baaa460b3/config.json
+    https://github.com/cornflourblue/node-mongo-signup-verification-api/blob/dd7a281835563655bc4d9ee6ab66a26baaa460b3/_helpers/send-email.js#L6
+    https://github.com/cornflourblue/node-mongo-signup-verification-api/blob/dd7a281835563655bc4d9ee6ab66a26baaa460b3/accounts/account.service.js#L289
+    https://github.com/cornflourblue/node-mongo-signup-verification-api/blob/dd7a281835563655bc4d9ee6ab66a26baaa460b3/accounts/account.service.js
+    https://github.com/cornflourblue/node-mongo-signup-verification-api/blob/dd7a281835563655bc4d9ee6ab66a26baaa460b3/accounts/accounts.controller.js
+    https://github.com/cornflourblue/node-mongo-signup-verification-api/blob/dd7a281835563655bc4d9ee6ab66a26baaa460b3/accounts/account.model.js
+
+    fuente : https://jasonwatmore.com/post/2020/04/22/react-email-sign-up-with-verification-authentication-forgot-password#running-node-mongo
+    smpt: https://nodemailer.com/usage/bulk-mail/
+    pkg: https://www.npmjs.com/package/nodemailer
