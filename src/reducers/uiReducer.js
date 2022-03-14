@@ -3,6 +3,8 @@ import { types } from "../types/types";
 const initialState = {
     newModalOpen: false,
     editModalOpen: false,
+    viewModalOpen: false,
+
 };
 
 
@@ -31,6 +33,19 @@ export const uiReducer = (state = initialState, action ) => {
                 ...state,
                 editModalOpen: false
             };
+
+        case types.uiViewOpenModal:
+            return {
+                ...state,
+                viewModalOpen: true
+            };
+
+        case types.uiViewCloseModal:
+            return {
+                ...state,
+                viewModalOpen: false
+            };
+
         default:
             return state;
     }

@@ -4,11 +4,24 @@ import Swal from 'sweetalert2';
 
 import { userStartDisable, userStartEnable, userStartLoading, userStartSetActive } from '../../../actions/user';
 import { uiEditOpenModal, uiNewOpenModal } from '../../../actions/ui';
+import { useForm } from '../../../hooks/useForm';
 import { EditUser, NewUser } from './modals';
+
+
+const initFormValue = {
+  searchEmail: '',
+  searchName: '',
+  searchRole: '',
+  searchOrigin: '',
+  searchStatus: '',
+};
+
 
 export const AdmUsersScreen = () => {
 
   const dispatch = useDispatch();
+  const [formValues, handleFormValues, reset] = useForm(initFormValue);
+  const { searchEmail, searchName, searchRole, searchOrigin, searchStatus } = formValues;
 
   const openNewModal = (e) => {
     dispatch( uiNewOpenModal() );
@@ -80,6 +93,13 @@ export const AdmUsersScreen = () => {
       dispatch( userStartSetActive({ uid }) );
       dispatch( userStartEnable(uid) );
     }
+  };
+
+  const resetFilters = () => {
+    reset();
+    document.querySelector("#searchRole").value='';
+    document.querySelector("#searchOrigin").value='';
+    document.querySelector("#searchStatus").value='';
   }
 
 
@@ -90,6 +110,62 @@ export const AdmUsersScreen = () => {
           <hr />
           <button className='btn btn-secondary' onClick={ openNewModal }>Nuevo Usuario</button>
           <div className='h5 mx-5 d-inline '>Total: <div className='d-inline text-warning bg-dark'>{ user.length } usuarios</div></div>
+          
+          <div className='d-inline-block mx-2'>
+            <input
+              type="text"
+              className='form-control form-control-sm'
+              id='searchEmail'
+              name='searchEmail'
+              placeholder='Buscar por Email'
+              value={ searchEmail }
+              onChange={ handleFormValues } 
+            >
+            </input>
+          </div>
+          
+          <div className='d-inline-block mx-2'>
+            <input
+              type="text"
+              className='form-control form-control-sm'
+              id='searchName'
+              name='searchName'
+              placeholder='Buscar por Nombre'
+              value={ searchName }
+              onChange={ handleFormValues } 
+            >
+            </input>
+          </div>
+
+          <div className='d-inline-block mx-2'>
+            <select className="form-control form-control-sm text-secondary" id="searchRole" onChange={ handleFormValues } name='searchRole' >
+              <option value=''>Buscar por Rol...</option>
+              <option className='text-dark' key='1' value='ADMIN_ROLE'>Administrador</option>
+              <option className='text-dark' key='2' value='USER_ROLE'>Usuario</option>
+            </select>
+          </div>
+
+          <div className='d-inline-block mx-2'>
+            <select className="form-control form-control-sm text-secondary" id="searchOrigin" onChange={ handleFormValues } name='searchOrigin' >
+              <option value=''>Buscar por Origen...</option>
+              <option className='text-dark' key='1' value='Portal'>Portal Web</option>
+              <option className='text-dark' key='2' value='Facebook'>Facebook</option>
+              <option className='text-dark' key='3' value='Google'>Google</option>
+            </select>
+          </div>
+
+          <div className='d-inline-block mx-2'>
+            <select className="form-control form-control-sm text-secondary" id="searchStatus" onChange={ handleFormValues } name='searchStatus' >
+              <option value=''>Buscar por Estado...</option>
+              <option className='text-dark' key='1' value='Activo'>Activo</option>
+              <option className='text-dark' key='2' value='Inactivo'>Inactivo</option>
+            </select>
+          </div>
+
+          <div className='d-inline-block mx-2'>
+            <button className='btn btn-secondary' onClick={ resetFilters }>Borrar filtros</button>
+          </div>
+
           <hr />
 
           <div className="table-responsive">
@@ -105,7 +181,24 @@ export const AdmUsersScreen = () => {
                 </tr>
               </thead>
               <tbody className='table-secondary text-center'>
-              { user.map((e, index) => {
+              {  
+                user       
+                  .filter(e => e.email.toUpperCase().includes(searchEmail.toUpperCase()) 
+                              && e.name.toUpperCase().includes(searchName.toUpperCase())
+                              && e.role.includes(searchRole)
+                              && (
+                                  (searchStatus === 'Activo') ? e.status === true
+                                  : (searchStatus === 'Inactivo') ? e.status === false
+                                    : true
+                                )   
+                              && (
+                                  (searchOrigin === 'Facebook') ? (e.facebook === true && e.google === false)
+                                  : (searchOrigin === 'Google') ? (e.facebook === false && e.google === true)
+                                    : (searchOrigin === 'Portal') ? (e.facebook === false && e.google === false)
+                                      : true
+                                )
+                        )
+                  .map((e, index) => {
                 return (
                   <tr key={ index }>
                     <td>{ e.email }</td>

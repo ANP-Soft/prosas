@@ -4,11 +4,20 @@ import Swal from 'sweetalert2';
 
 import { categoryDelete, categoryStartLoading, categoryStartSetActive } from '../../../actions/category';
 import { uiEditOpenModal, uiNewOpenModal } from '../../../actions/ui';
+import { useForm } from '../../../hooks/useForm';
 import { NewCategory, EditCategory } from './modals';
+
+
+const initFormValue = {
+  searchCode: '',
+  searchName: '',
+};
 
 export const AdmCategoriesScreen = () => {
 
   const dispatch = useDispatch();
+  const [formValues, handleFormValues, reset] = useForm(initFormValue);
+  const { searchCode, searchName } = formValues;
 
   const openNewModal = (e) => {
     dispatch( uiNewOpenModal() );
@@ -60,6 +69,11 @@ export const AdmCategoriesScreen = () => {
     }
   };
 
+  const resetFilters = () => {
+    reset();
+    document.querySelector("#searchCategory").value='';
+  };
+
   return (
     <div className='col-md-9 col-lg-10 mt-3'>
         <div className='container-fluid'>  
@@ -67,6 +81,34 @@ export const AdmCategoriesScreen = () => {
           <hr />
         <button className='btn btn-secondary' onClick={ openNewModal }>Nueva Categoría</button>
         <div className='h5 mx-5 d-inline '>Total: <div className='d-inline text-warning bg-dark'>{ category.length } categorias</div></div>
+        <div className='d-inline-block mx-2'>
+          <input
+            type="text"
+            className='form-control form-control-sm'
+            id='searchCode'
+            name='searchCode'
+            placeholder='Buscar por Código'
+            value={ searchCode }
+            onChange={ handleFormValues } 
+          >
+          </input>
+        </div>
+        <div className='d-inline-block mx-2'>
+          <input
+            type="text"
+            className='form-control form-control-sm'
+            id='searchName'
+            name='searchName'
+            placeholder='Buscar por Nombre'
+            value={ searchName }
+            onChange={ handleFormValues } 
+          >
+          </input>
+        </div>
+
+        <div className='d-inline-block mx-2'>
+          <button className='btn btn-secondary' onClick={ resetFilters }>Borrar filtros</button>
+        </div>
         <hr />
 
         <div className="table-responsive">
@@ -79,7 +121,10 @@ export const AdmCategoriesScreen = () => {
                 </tr>
               </thead>
               <tbody className='table-secondary'>
-              { category.map((e, index) => {
+              { category
+                    .filter(e => String(e.code).includes(searchCode) && e.name.includes(searchName.toUpperCase()) )
+                    // .filter(e => e.name.includes(searchName.toUpperCase()))
+                    .map((e, index) => {
 
                     return (
                       <tr key={ index }>
